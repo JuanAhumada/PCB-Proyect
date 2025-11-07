@@ -239,8 +239,8 @@ h1 {
 }
 
 .type-sprite {
-    width: 60px; /* Aumentado para mejor tamaño */
-    height: 13px; /* Aumentado proporcionalmente */
+    width: 100px; /* Aumentado para mejor tamaño */
+    height: 22px; /* Aumentado proporcionalmente */
 }
 
 #downloadBtn {

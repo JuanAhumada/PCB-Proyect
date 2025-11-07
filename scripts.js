@@ -46,13 +46,40 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="Image"><img src="${pokemon.sprite}" alt="${pokemon.name}" crossorigin="anonymous"></div>
                         <div class="Stats">
                             <table class="stats-table">
-                                <tr><td>Hp</td><td>${pokemon.stats.hp}</td></tr>
-                                <tr><td>Atq</td><td>${pokemon.stats.attack}</td></tr>
-                                <tr><td>Def</td><td>${pokemon.stats.defense}</td></tr>
-                                <tr><td>Spa</td><td>${pokemon.stats.specialAttack}</td></tr>
-                                <tr><td>Spd</td><td>${pokemon.stats.specialDefense}</td></tr>
-                                <tr><td>Spe</td><td>${pokemon.stats.speed}</td></tr>
-                                <tr><td>Total</td><td>${pokemon.stats.total}</td></tr>
+                                <tr>
+                                    <td width="50px">Hp</td>
+                                    <td width="50px">${pokemon.stats.hp}</td>
+                                    <td><div style="background-color: #FF0000; width: ${(pokemon.stats.hp / 255) * 100}%; height: 15px;"></div></td>
+                                    </tr>
+                                <tr>
+                                    <td>Attack</td>
+                                    <td>${pokemon.stats.attack}</td>
+                                    <td><div  style="background-color: #FFA500; width: ${(pokemon.stats.attack / 255) * 100}%; height: 15px;"></div></td>
+                                </tr>
+                                <tr>
+                                    <td>Defense</td>
+                                    <td>${pokemon.stats.defense}</td>
+                                    <td><div style="background-color: #0000FF; width: ${(pokemon.stats.defense / 255) * 100}%; height:15px;"></div></td>
+                                </tr>
+                                <tr>
+                                    <td>Sp Atck.</td>
+                                    <td>${pokemon.stats.specialAttack}</td>
+                                    <td><div style="background-color: #800080; width: ${(pokemon.stats.specialAttack / 255) * 100}%; height:15px;"></div></td>
+                                </tr>
+                                <tr>
+                                    <td>Sp Def.</td>
+                                    <td>${pokemon.stats.specialDefense}</td>
+                                    <td><div style="background-color: #00FF00; width: ${(pokemon.stats.specialDefense / 255) * 100}%; height: 15px;"></div></td>
+                                </tr>
+                                <tr>
+                                    <td>Speed</td>
+                                    <td>${pokemon.stats.speed}</td>
+                                    <td><div style="background-color: #FFFF00; width: ${(pokemon.stats.speed / 255) * 100}%; height: 15px;"></div></td>
+                                </tr>
+                                <tr>
+                                    <td>Total</td>
+                                    <td colspan="2">${pokemon.stats.total}</td>
+                                </tr>
                             </table>
                         </div>
                         <div class="Ability">
@@ -63,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <strong>Ataques:</strong>
                             ${pokemon.moves.map(move => `
                                 <table class="move-table">
-                                    <tr><td >${move.name}</td><td>${move.category}</td></tr>
+                                    <tr><td colspan="2">${move.name}</td><td>${move.category}</td></tr>
                                     <tr><td>${move.power}</td><td>${move.accuracy}</td><td>${move.type}</td></tr>
                                 </table>
                             `).join('')}
@@ -112,7 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 try {
                     const abRes = await fetch(`https://pokeapi.co/api/v2/ability/${aid}`);
                     const abData = await abRes.json();
-                    abilities.push({ name: abData.name.charAt(0).toUpperCase() + abData.name.slice(1) });
+                    abilities.push({ name: abData.name.charAt(0).toUpperCase() + abData.name.slice(1).replace(/-/g, ' ') });
                 } catch {
                     abilities.push({ name: 'Error' });
                 }
@@ -129,8 +156,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 try {
                     const mvRes = await fetch(`https://pokeapi.co/api/v2/move/${mid}`);
                     const mvData = await mvRes.json();
+                    const pName = mvData.name.split("-")
                     moves.push({
-                        name: mvData.name.charAt(0).toUpperCase() + mvData.name.slice(1),
+                        name: pName.length === 1
+                        ? pName[0].charAt(0).toUpperCase() + pName[0].slice(1)
+                        : pName[0].charAt(0).toUpperCase() + pName[0].slice(1) + " " + pName[1].charAt(0).toUpperCase() + pName[1].slice(1),
                         category: mvData.damage_class?.name.charAt(0).toUpperCase() + mvData.damage_class?.name.slice(1) || 'N/A',
                         power: mvData.power || 'N/A',
                         accuracy: mvData.accuracy || 'N/A',
@@ -140,10 +170,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     moves.push({ name: 'Error', category: 'N/A', power: 'N/A', accuracy: 'N/A', type: 'N/A' });
                 }
             }
-
             return {
                 name: data.name.charAt(0).toUpperCase() + data.name.slice(1),
-                sprite: data.sprites.front_default,
+                sprite: data.sprites.other["official-artwork"]["front_default"],
                 types,
                 stats,
                 abilities,
