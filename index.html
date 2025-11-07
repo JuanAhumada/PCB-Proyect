@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokémon Card Opener</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Abre Sobres de Pokémon</h1>
+    <div class="controls">
+        <label for="numCards">Número de tarjetas:</label>
+        <input type="number" id="numCards" min="1" max="50" value="6">
+        <button id="startBtn">Empezar a Abrir</button>
+    </div>
+    <div id="cardsContainer"></div>
+    <button id="downloadBtn" style="display: none;">Descargar Todas las Tarjetas</button>
+    
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script src="scripts.js"></script>
+</body>
+</html>

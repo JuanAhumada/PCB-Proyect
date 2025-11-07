@@ -1,0 +1,264 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+    background-color: #fff;
+    margin: 0;
+    padding: 20px;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+h1 {
+    color: #FF0000;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.controls {
+    margin-bottom: 30px;
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 20px;
+    border-radius: 20px;
+    border: 2px solid #FF0000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.controls label {
+    color: #333;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.controls input {
+    padding: 10px;
+    border: 1px solid #CCC;
+    border-radius: 10px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    margin-left: 10px;
+}
+
+.controls button {
+    padding: 12px 24px;
+    background: linear-gradient(45deg, #FF0000, #FF6B6B);
+    color: #FFF;
+    border: none;
+    border-radius: 25px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.controls button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+#cardsContainer {
+    display: grid;
+    grid-template-columns: 1fr; /* Una por fila */
+    gap: 30px;
+    justify-items: center;
+    margin-top: 20px;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 20px;
+    border: 2px solid #4ECDC4;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+}
+
+.card {
+    width: 90vw; /* Más ancha, ocupa casi toda la pantalla */
+    height: 500px;
+    perspective: 1000px;
+    cursor: pointer;
+    border-radius: 15px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+
+.card.flipped .card-inner {
+    transform: rotateY(180deg);
+}
+
+.card-front, .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 15px;
+    box-sizing: border-box;
+}
+
+.card-front {
+    background-color: #F0F0F0;
+    background-image: url('https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: #666;
+}
+
+.card-back {
+    background-color: #FFF;
+    transform: rotateY(180deg);
+    padding: 10px;
+    border: 1px solid #DDD;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    gap: 8px;
+}
+
+.Name {
+    grid-column: span 5 / span 5;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.Image {
+    grid-column: span 2 / span 2;
+    grid-row: span 3 / span 3;
+    grid-row-start: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.Image img {
+    width: 200px; /* Más grande */
+    height: 200px; /* Más grande, cuadrado para proporción */
+    object-fit: contain; /* Mantiene proporción sin distorsión */
+}
+
+.Stats {
+    grid-row: span 3 / span 3;
+    grid-column-start: 3;
+    grid-row-start: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.stats-table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 12px;
+}
+
+.stats-table th, .stats-table td {
+    border: 1px solid #CCC; /* Bordes delgados internos */
+    padding: 4px;
+    text-align: center;
+}
+
+.stats-table tr {
+    border-bottom: 3px solid #000; /* Bordes gruesos entre filas */
+}
+
+.Ability {
+    grid-row: span 3 / span 3;
+    grid-column-start: 4;
+    grid-row-start: 2;
+    font-size: 12px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centrado vertical */
+    align-items: center;
+}
+
+.Ability div {
+    margin: 5px 0;
+}
+
+.Moves {
+    grid-row: span 3 / span 3;
+    grid-column-start: 5;
+    grid-row-start: 2;
+    font-size: 10px;
+    overflow-y: auto;
+}
+
+.move-table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 10px;
+    border: 3px solid #000; /* Borde grueso alrededor de cada movimiento */
+}
+
+.move-table th, .move-table td {
+    border: 1px solid #CCC; /* Bordes delgados internos */
+    padding: 2px;
+    text-align: center;
+}
+
+.Type-Name { grid-column: span 2 / span 2; font-weight: 700; }
+.Category { grid-column-start: 3; }
+.Power { grid-row-start: 2; }
+.Accuracy { grid-row-start: 2; grid-column-start: 2; }
+.Move-Type { grid-row-start: 2; grid-column-start: 3; }
+
+.Types {
+    grid-column: span 2 / span 2;
+    grid-row-start: 5;
+    display: flex; /* Cambiado a flex para horizontal */
+    justify-content: center; /* Centra si hay uno solo */
+    gap: 8px;
+    flex-wrap: wrap; /* Envuelve si hay muchos */
+}
+
+.type-sprite {
+    width: 60px; /* Aumentado para mejor tamaño */
+    height: 13px; /* Aumentado proporcionalmente */
+}
+
+#downloadBtn {
+    margin-top: 30px;
+    padding: 15px 30px;
+    background: linear-gradient(45deg, #4ECDC4, #45B7D1);
+    color: #FFF;
+    border: none;
+    border-radius: 25px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+#downloadBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
