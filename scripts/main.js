@@ -1,8 +1,9 @@
+const RandomTeam= [];
+
 document.addEventListener('DOMContentLoaded', () => {
     const numCardsInput = document.getElementById('numCards');
     const startBtn = document.getElementById('startBtn');
     const cardsContainer = document.getElementById('cardsContainer');
-    const downloadBtn = document.getElementById('downloadBtn');
 
     const typeSprites = {
         normal: 1, fighting: 2, flying: 3, poison: 4, ground: 5,
@@ -139,6 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!abilityIds.includes(aid)) abilityIds.push(aid);
             }
             const abilities = [];
+            const randomAbilities = [];
             for (const aid of abilityIds) {
                 try {
                     const abRes = await fetch(`https://pokeapi.co/api/v2/ability/${aid}`);
@@ -147,6 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 } catch {
                     abilities.push({ name: 'Error' });
                 }
+                randomAbilities.push(aid)
             }
 
             // Ataques: Con categoría, potencia, precisión, tipo
@@ -156,11 +159,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!moveIds.includes(mid)) moveIds.push(mid);
             }
             const moves = [];
+            const randomMoves = [];
             for (const mid of moveIds) {
                 try {
                     const mvRes = await fetch(`https://pokeapi.co/api/v2/move/${mid}`);
                     const mvData = await mvRes.json();
-                    const pName = mvData.name.split("-",2)
+                    const pName = mvData.name.split("-")
                     moves.push({
                         name: pName.length === 1
                         ? pName[0].charAt(0).toUpperCase() + pName[0].slice(1)
@@ -170,10 +174,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         accuracy: mvData.accuracy || 'N/A',
                         type: mvData.type?.name.charAt(0).toUpperCase() + mvData.type?.name.slice(1) || 'N/A'
                     });
+                    randomMoves.push(mid)
                 } catch {
                     moves.push({ name: 'Error', category: 'N/A', power: 'N/A', accuracy: 'N/A', type: 'N/A' });
                 }
             }
+                RandomTeam.push({pokemon: id, abilities: randomAbilities, moves: randomMoves})
             return {
                 name: data.name.replace("-"," "),
                 sprite: data.sprites.other["official-artwork"]["front_default"],
@@ -187,37 +193,14 @@ document.addEventListener('DOMContentLoaded', () => {
             return { name: 'Error', sprite: '', types: [], stats: { hp: 0, attack: 0, defense: 0, specialAttack: 0, specialDefense: 0, speed: 0, total: 0 }, abilities: [], moves: [] };
         }
     }
-
-    // DESCARGA TXT: Genera un archivo de texto con datos de todos los Pokémon flipped
-    downloadBtn.addEventListener('click', () => {
-        const flippedCards = document.querySelectorAll('.card.flipped');
-        let txtContent = 'Datos de Pokémon Abiertos\n\n';
-
-        flippedCards.forEach((card, index) => {
-            const pokemonData = card.querySelector('.card-back');
-            if (pokemonData) {
-                const name = pokemonData.querySelector('.Name')?.textContent || 'Desconocido';
-                const abilities = Array.from(pokemonData.querySelectorAll('.Ability div')).map(div => div.textContent).join(', ');
-                const moves = Array.from(pokemonData.querySelectorAll('.move-table')).map(table => {
-                    const rows = table.querySelectorAll('tr');
-                    if (rows.length > 0) {
-                        const cells = rows[0].querySelectorAll('td');
-                        return `${cells[0]?.textContent || ''}`;
-                    }
-                    return '';
-                }).join(', ');
-
-                txtContent += `Pokémon ${index + 1}: ${name}\n`;
-                txtContent += `Habilidades: ${abilities}\n`;
-                txtContent += `Ataques: ${moves}\n`;
-                txtContent += '---\n\n';
-            }
-        });
-
-        const blob = new Blob([txtContent], { type: 'text/plain' });
-        const link = document.createElement('a');
-        link.download = 'pokemon-data.txt';
-        link.href = URL.createObjectURL(blob);
-        link.click();
-    });
 });
+function TeamBuilder() {
+    if (RandomTeam.length === 0) {
+        alert('Agrega al menos un Pokémon antes de continuar.');
+        return;
+    }
+    // Guarda la lista en localStorage como JSON
+    localStorage.setItem('pokemonData', JSON.stringify(RandomTeam));
+    // Navega a la página del armador
+    window.location.href = 'builder.html';  // Asegúrate de que el archivo se llame así
+}

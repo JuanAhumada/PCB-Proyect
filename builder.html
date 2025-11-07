@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Armador de Pokémon para Showdown</title>
+    <link rel="stylesheet" href="/styles/builder.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Armador de Pokémon para Pokémon Showdown</h1>
+        
+        <div id="pokemonImage" class="pokemon-image hidden">
+            <img id="pokemonImg" src="" alt="Imagen del Pokémon">
+        </div>
+        
+        <div class="section">
+            <label for="pokemonSelect">Selecciona un Pokémon:</label>
+            <select id="pokemonSelect">
+                <option value="">-- Elige un Pokémon --</option>
+            </select>
+        </div>
+        
+        <div class="section">
+            <label for="teraTypeSelect">Selecciona Teratipo:</label>
+            <select id="teraTypeSelect">
+                <option value="Normal">Normal</option>
+                <option value="Fire">Fire</option>
+                <option value="Water">Water</option>
+                <option value="Electric">Electric</option>
+                <option value="Grass">Grass</option>
+                <option value="Ice">Ice</option>
+                <option value="Fighting">Fighting</option>
+                <option value="Poison">Poison</option>
+                <option value="Ground">Ground</option>
+                <option value="Flying">Flying</option>
+                <option value="Psychic">Psychic</option>
+                <option value="Bug">Bug</option>
+                <option value="Rock">Rock</option>
+                <option value="Ghost">Ghost</option>
+                <option value="Dragon">Dragon</option>
+                <option value="Dark">Dark</option>
+                <option value="Steel">Steel</option>
+                <option value="Fairy">Fairy</option>
+            </select>
+        </div>
+        
+        <div id="abilitiesSection" class="section hidden">
+            <label for="abilitySelect">Selecciona una Habilidad:</label>
+            <select id="abilitySelect">
+                <option value="">-- Elige una Habilidad --</option>
+            </select>
+            <p id="abilityDesc" class="desc">Selecciona una habilidad para ver su descripción.</p>
+        </div>
+        
+        <div id="movesSection" class="section hidden">
+            <label>Selecciona hasta 4 Movimientos:</label>
+            <div id="movesList" class="moves-grid"></div>
+        </div>
+        
+        <button id="exportBtn" class="btn">Exportar para Showdown</button>
+        <pre id="export" class="export-area"></pre>
+    </div>
+
+    <script src="/scripts/builder.js"></script>
+</body>
+</html>
