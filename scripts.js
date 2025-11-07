@@ -83,15 +83,20 @@ document.addEventListener('DOMContentLoaded', () => {
                             </table>
                         </div>
                         <div class="Ability">
-                            <strong>Habilidades:</strong>
                             ${pokemon.abilities.map(ability => `<div>${ability.name}</div>`).join('')}
                         </div>
                         <div class="Moves">
-                            <strong>Ataques:</strong>
                             ${pokemon.moves.map(move => `
                                 <table class="move-table">
-                                    <tr><td colspan="2">${move.name}</td><td>${move.category}</td></tr>
-                                    <tr><td>${move.power}</td><td>${move.accuracy}</td><td>${move.type}</td></tr>
+                                    <tr class="move-cat">
+                                        <td colspan="2">${move.name}</td>
+                                        <td width=100px><img src="images/${move.category}.png" alt="${move.category}" crossorigin="anonymous" width="20px" height="20px"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>${move.power}</td>
+                                        <td>${move.accuracy}</td>
+                                        <td><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/types/generation-viii/sword-shield/${typeSprites[move.type.toLowerCase()]}.png" alt="${move.type}" crossorigin="anonymous" width="100px" height="22px"></td>
+                                    </tr>
                                 </table>
                             `).join('')}
                         </div>
@@ -100,7 +105,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                     `;
                     card.classList.add('flipped');
-
                     const allCards = document.querySelectorAll('.card');
                     const flippedCards = document.querySelectorAll('.card.flipped');
                     if (flippedCards.length === allCards.length) {
@@ -156,11 +160,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 try {
                     const mvRes = await fetch(`https://pokeapi.co/api/v2/move/${mid}`);
                     const mvData = await mvRes.json();
-                    const pName = mvData.name.split("-")
+                    const pName = mvData.name.split("-",2)
                     moves.push({
                         name: pName.length === 1
                         ? pName[0].charAt(0).toUpperCase() + pName[0].slice(1)
-                        : pName[0].charAt(0).toUpperCase() + pName[0].slice(1) + " " + pName[1].charAt(0).toUpperCase() + pName[1].slice(1),
+                        : pName[0].charAt(0).toUpperCase() + pName[0].slice(1) + " " + pName[1].replace(/-/g, ' '),
                         category: mvData.damage_class?.name.charAt(0).toUpperCase() + mvData.damage_class?.name.slice(1) || 'N/A',
                         power: mvData.power || 'N/A',
                         accuracy: mvData.accuracy || 'N/A',
@@ -171,7 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
             return {
-                name: data.name.charAt(0).toUpperCase() + data.name.slice(1),
+                name: data.name.replace("-"," "),
                 sprite: data.sprites.other["official-artwork"]["front_default"],
                 types,
                 stats,
@@ -201,7 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         return `${cells[0]?.textContent || ''}`;
                     }
                     return '';
-                }).join('; ');
+                }).join(', ');
 
                 txtContent += `Pokémon ${index + 1}: ${name}\n`;
                 txtContent += `Habilidades: ${abilities}\n`;

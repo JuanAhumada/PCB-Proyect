@@ -80,7 +80,7 @@ h1 {
 }
 
 .card {
-    width: 90vw; /* Más ancha, ocupa casi toda la pantalla */
+    width: 70vw; /* Más ancha, ocupa casi toda la pantalla */
     height: 500px;
     perspective: 1000px;
     cursor: pointer;
@@ -117,16 +117,17 @@ h1 {
 }
 
 .card-front {
-    background-color: #F0F0F0;
-    background-image: url('https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png');
-    background-size: contain;
+    background-image: url('https://wallpapers.com/images/hd/basic-pokeball-cover-mcs4xg2ash4hj4e9.jpg');
+    background-size: cover; /* Cubre todo el área */
     background-position: center;
     background-repeat: no-repeat;
+    background-color: #F0F0F0;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 14px;
-    color: #666;
+    color: #fff; /* Mejor contraste sobre la imagen */
+    border-radius: 15px;
 }
 
 .card-back {
@@ -139,11 +140,12 @@ h1 {
     grid-template-rows: repeat(5, 1fr);
     gap: 8px;
 }
-
 .Name {
     grid-column: span 5 / span 5;
-    font-size: 20px;
-    font-weight: 700;
+    font-size: 28px; /* Aumentado */
+    font-weight: 900; /* Más fuerte */
+    text-transform: uppercase;
+    color: #222;
 }
 
 .Image {
@@ -156,9 +158,10 @@ h1 {
 }
 
 .Image img {
-    width: 200px; /* Más grande */
-    height: 200px; /* Más grande, cuadrado para proporción */
-    object-fit: contain; /* Mantiene proporción sin distorsión */
+    width: 100%; /* Se expande al ancho completo */
+    height: auto;
+    object-fit: cover; /* Rellena manteniendo proporción */
+    border-radius: 10px;
 }
 
 .Stats {
@@ -174,16 +177,22 @@ h1 {
     border-collapse: collapse;
     width: 100%;
     font-size: 12px;
+    background-color: #f5f5f5; /* Gris claro */
+    border: 2px solid #999; /* Borde externo */
 }
 
 .stats-table th, .stats-table td {
-    border: 1px solid #CCC; /* Bordes delgados internos */
-    padding: 4px;
+    border: none; /* Sin bordes internos */
+    padding: 6px;
     text-align: center;
 }
 
-.stats-table tr {
-    border-bottom: 3px solid #000; /* Bordes gruesos entre filas */
+.stats-table tr:first-child th {
+    border-bottom: 2px solid #999; /* Borde inferior del encabezado */
+}
+
+.stats-table tr:last-child td {
+    border-top: 2px solid #999; /* Borde superior de la última fila */
 }
 
 .Ability {
@@ -215,6 +224,12 @@ h1 {
     width: 100%;
     margin-bottom: 10px;
     border: 3px solid #000; /* Borde grueso alrededor de cada movimiento */
+    font-size: 14px;
+}
+
+.move-cat{
+    background-color: #000;
+    color: #FFF;
 }
 
 .move-table th, .move-table td {
@@ -228,6 +243,9 @@ h1 {
 .Power { grid-row-start: 2; }
 .Accuracy { grid-row-start: 2; grid-column-start: 2; }
 .Move-Type { grid-row-start: 2; grid-column-start: 3; }
+.Move-Type img{
+    width: 50px;
+}
 
 .Types {
     grid-column: span 2 / span 2;
@@ -239,8 +257,8 @@ h1 {
 }
 
 .type-sprite {
-    width: 100px; /* Aumentado para mejor tamaño */
-    height: 22px; /* Aumentado proporcionalmente */
+    width: 150px; /* Aumentado para mejor tamaño */
+    height: 33px; /* Aumentado proporcionalmente */
 }
 
 #downloadBtn {
