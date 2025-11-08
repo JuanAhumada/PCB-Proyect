@@ -51,7 +51,7 @@ pokemonSelect.addEventListener('change', async (e) => {
     // Mostrar imagen del Pokémon
     const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${data.pokemon}`);
     const pokemon = await response.json();
-    document.getElementById('pokemonImg').src = pokemon.sprites.front_default;
+    document.getElementById('pokemonImg').src = pokemon.sprites.other["official-artwork"]["front_default"];
     document.getElementById('pokemonImage').classList.remove('hidden');
 
     // Cargar habilidades
