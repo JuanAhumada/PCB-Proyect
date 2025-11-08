@@ -5,6 +5,8 @@ if (storedData) {
     pokemonData = JSON.parse(storedData);
 } else {
     alert('No se encontró una lista de Pokémon. Regresa a la página de selección.');
+    // Opcional: redirige de vuelta
+    // window.location.href = 'seleccion.html';
 }
 
 const pokemonSelect = document.getElementById('pokemonSelect');
@@ -17,6 +19,11 @@ const exportArea = document.getElementById('export');
 let selectedPokemon = null;
 let selectedAbility = null;
 let selectedMoves = [];
+
+// Función para formatear nombres (quitar guiones y capitalizar)
+function formatName(name) {
+    return name.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+}
 
 // Cargar Pokémon en el selector
 async function loadPokemons() {
@@ -44,7 +51,7 @@ pokemonSelect.addEventListener('change', async (e) => {
     // Mostrar imagen del Pokémon
     const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${data.pokemon}`);
     const pokemon = await response.json();
-    document.getElementById('pokemonImg').src = pokemon.sprites.other["official-artwork"]["front_default"];
+    document.getElementById('pokemonImg').src = pokemon.sprites.front_default;
     document.getElementById('pokemonImage').classList.remove('hidden');
 
     // Cargar habilidades
@@ -54,7 +61,7 @@ pokemonSelect.addEventListener('change', async (e) => {
         const ability = await response.json();
         const option = document.createElement('option');
         option.value = `${abilityId}|${ability.name}`;
-        option.textContent = ability.name.charAt(0).toUpperCase() + ability.name.slice(1);
+        option.textContent = formatName(ability.name);
         abilitySelect.appendChild(option);
     }
     document.getElementById('abilitiesSection').classList.remove('hidden');
@@ -66,15 +73,16 @@ pokemonSelect.addEventListener('change', async (e) => {
         const move = await response.json();
         const button = document.createElement('button');
         button.className = 'move-btn';
-        button.textContent = move.name.charAt(0).toUpperCase() + move.name.slice(1);
+        button.textContent = formatName(move.name);
         button.addEventListener('click', () => {
-            if (selectedMoves.includes(move.name)) {
+            const formattedName = formatName(move.name);
+            if (selectedMoves.includes(formattedName)) {
                 // Deseleccionar
-                selectedMoves = selectedMoves.filter(m => m !== move.name);
+                selectedMoves = selectedMoves.filter(m => m !== formattedName);
                 button.classList.remove('selected');
             } else if (selectedMoves.length < 4) {
                 // Seleccionar
-                selectedMoves.push(move.name);
+                selectedMoves.push(formattedName);
                 button.classList.add('selected');
             } else {
                 alert('Solo puedes seleccionar 4 movimientos.');
@@ -93,7 +101,7 @@ abilitySelect.addEventListener('change', async (e) => {
         return;
     }
     const [abilityId, abilityName] = e.target.value.split('|');
-    selectedAbility = abilityName;
+    selectedAbility = formatName(abilityName);  // Formatear aquí también
     const response = await fetch(`https://pokeapi.co/api/v2/ability/${abilityId}`);
     const ability = await response.json();
     const desc = ability.effect_entries.find(entry => entry.language.name === 'en')?.effect || 'Descripción no disponible';
@@ -101,7 +109,7 @@ abilitySelect.addEventListener('change', async (e) => {
 });
 
 // Exportar
-exportBtn.addEventListener('click', () => {
+exportBtn.addEventListener('click', async () => {
     if (!selectedPokemon || !selectedAbility || selectedMoves.length !== 4) {
         alert('Selecciona Pokémon, habilidad y exactamente 4 movimientos.');
         return;
@@ -109,7 +117,23 @@ exportBtn.addEventListener('click', () => {
     const teraType = document.getElementById('teraTypeSelect').value;
     const pokemonName = pokemonSelect.options[pokemonSelect.selectedIndex].textContent;
     const exportText = `${pokemonName}\nAbility: ${selectedAbility}\nTera Type: ${teraType}\n- ${selectedMoves[0]}\n- ${selectedMoves[1]}\n- ${selectedMoves[2]}\n- ${selectedMoves[3]}`;
+    
+    // Mostrar el texto en el área de export
     exportArea.textContent = exportText;
+    
+    // Copiar al portapapeles
+    try {
+        await navigator.clipboard.writeText(exportText);
+        // Confirmación visual
+        const originalText = exportBtn.textContent;
+        exportBtn.textContent = '¡Copiado!';
+        setTimeout(() => {
+            exportBtn.textContent = originalText;
+        }, 2000); // Vuelve al texto original después de 2 segundos
+    } catch (err) {
+        alert('No se pudo copiar automáticamente. Copia el texto manualmente desde el área de abajo.');
+        console.error('Error al copiar:', err);
+    }
 });
 
 // Inicializar
